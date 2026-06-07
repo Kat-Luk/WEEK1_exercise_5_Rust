@@ -3,44 +3,48 @@ fn main() {
     let mut potion: i32 = 3;
     let mut player_life: f32 = 100.0;
     let mut enemy_life: f32 = 150.0;
-    while player_life > 0.0 && enemy_life > 0.0 {
-        println!("| Your HP - {} | Boss HP - {} |", player_life, enemy_life);
-        println!("| 1) Attack | 2) Defend | 3) Heal |");
-        let mut choice = String::new();
-        io::stdin().read_line(&mut choice).expect("Error reading inout");
-        let choice = choice.trim();
-        if choice == "1" {
-            let attack: f32 = receive_player_attack_dmg();
-            let damage: f32 = receive_boss_attack_dmg();
-            enemy_life -= attack;
-            player_life -= damage;
-            println!("Your attack deals {} amount of damage.", attack);
-            println!("You take {} damage.", damage);
-        } else if choice == "2" {
-            let defense: f32 = receive_defense_multiplier();
-            let damage: f32 = receive_boss_attack_dmg()-defense;
-            player_life -= damage;
-            println!("Defense activated!");
-            println!("You take {} damage.", damage);
-        } else if choice == "3" {
-            if potion > 0 {
-            let health: f32 = receive_health_potion(player_life);
-            let damage: f32 = receive_boss_attack_dmg();
-            player_life = player_life - damage + health;
-            potion -= 1;
-            println!("You consume a potion.");
-            println!("You take {} damage.", damage);
+    loop {
+        while player_life > 0.0 && enemy_life > 0.0 {
+            println!("| Your HP - {} | Boss HP - {} |", player_life, enemy_life);
+            println!("| 1) Attack | 2) Defend | 3) Heal |");
+            let mut choice = String::new();
+            io::stdin().read_line(&mut choice).expect("Error reading inout");
+            let choice = choice.trim();
+            if choice == "1" {
+                let attack: f32 = receive_player_attack_dmg();
+                let damage: f32 = receive_boss_attack_dmg();
+                enemy_life -= attack;
+                player_life -= damage;
+                println!("Your attack deals {} amount of damage.", attack);
+                println!("You take {} damage.", damage);
+            } else if choice == "2" {
+                let defense: f32 = receive_defense_multiplier();
+                let damage: f32 = receive_boss_attack_dmg()-defense;
+                player_life -= damage;
+                println!("Defense activated!");
+                println!("You take {} damage.", damage);
+            } else if choice == "3" {
+                if potion > 0 {
+                let health: f32 = receive_health_potion(player_life);
+                let damage: f32 = receive_boss_attack_dmg();
+                player_life = player_life - damage + health;
+                potion -= 1;
+                println!("You consume a potion.");
+                println!("You take {} damage.", damage);
+                } else {
+                println!("No more potions");
+                }
             } else {
-            println!("No more potions");
+                println!("Wrong input");
             }
-        } else {
-            println!("Wrong input");
         }
-    }
-    if player_life <= 0.0 {
-        println!("You have been defeated");
-    } else {
-        println!("You have defeated enemy");
+        if player_life <= 0.0 {
+            println!("You have been defeated");
+            break;
+        } else {
+            println!("You have defeated enemy");
+            break;
+        }
     }
 }
 
